@@ -1,0 +1,28 @@
+# ─── Secrets — never commit these ────────────────────────────────────────────
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# ─── Node ─────────────────────────────────────────────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# ─── Next.js ──────────────────────────────────────────────────────────────────
+web/.next/
+web/out/
+web/tsconfig.tsbuildinfo
+
+# ─── Foundry ──────────────────────────────────────────────────────────────────
+contracts/out/
+contracts/cache/
+contracts/broadcast/
+
+# ─── Prisma ───────────────────────────────────────────────────────────────────
+web/prisma/migrations/
+
+# ─── OS ───────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db

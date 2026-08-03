@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+:root {
+  --background: #09090b;
+  --foreground: #fafafa;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Chat bubbles */
+.chat-bubble-user {
+  @apply rounded-2xl rounded-br-sm bg-violet-600 px-4 py-2.5 text-sm text-white;
+}
+
+.chat-bubble-agent {
+  @apply rounded-2xl rounded-bl-sm border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-zinc-200;
+}
+
+/* Step indicator used in chat */
+.step-item {
+  @apply flex items-center gap-2 text-xs text-zinc-400;
+}
+.step-item.done {
+  @apply text-emerald-400;
+}
+.step-item.active {
+  @apply text-violet-300;
+}
