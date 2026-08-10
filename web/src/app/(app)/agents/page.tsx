@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/prisma'
-import { formatUSDT, formatDate, shortenAddress } from '@/lib/utils'
+import { formatUSDT, shortenAddress } from '@/lib/utils'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -22,7 +22,7 @@ export default async function AgentsPage() {
     <div className="space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Agents</h1>
+          <h1 className="text-3xl font-black uppercase tracking-tight text-white">Agents</h1>
           <p className="mt-1 text-sm text-zinc-400">
             Create and manage your AI agents with programmable wallets.
           </p>
@@ -54,19 +54,16 @@ export default async function AgentsPage() {
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {agents.map((agent) => (
-            <Card
-              key={agent.id}
-              className="transition hover:border-violet-500/30 hover:bg-violet-500/5"
-            >
+            <Card key={agent.id} className="nb-press hover:border-violet-400">
               <CardContent className="p-6">
                 <div className="mb-4 flex items-start justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-600/20">
-                      <Bot className="h-5 w-5 text-violet-400" />
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg border-2 border-violet-400 bg-violet-600/25">
+                      <Bot className="h-5 w-5 text-violet-300" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-white">{agent.name}</h3>
-                      <p className="text-xs text-zinc-500">
+                      <h3 className="font-bold text-white">{agent.name}</h3>
+                      <p className="font-mono text-xs text-zinc-500">
                         {agent.walletAddress
                           ? shortenAddress(agent.walletAddress)
                           : 'Not deployed'}
@@ -77,22 +74,22 @@ export default async function AgentsPage() {
                 </div>
 
                 <div className="mb-4 grid grid-cols-2 gap-3">
-                  <div className="rounded-lg bg-white/5 p-3">
-                    <p className="text-xs text-zinc-500">Tx Limit</p>
-                    <p className="mt-0.5 text-sm font-semibold text-white">
+                  <div className="rounded-lg border-2 border-zinc-700 bg-[var(--surface-2)] p-3">
+                    <p className="text-xs font-bold uppercase tracking-wide text-zinc-500">Tx Limit</p>
+                    <p className="mt-0.5 text-sm font-bold text-white">
                       {formatUSDT(agent.transactionLimit)}
                     </p>
                   </div>
-                  <div className="rounded-lg bg-white/5 p-3">
-                    <p className="text-xs text-zinc-500">Daily Limit</p>
-                    <p className="mt-0.5 text-sm font-semibold text-white">
+                  <div className="rounded-lg border-2 border-zinc-700 bg-[var(--surface-2)] p-3">
+                    <p className="text-xs font-bold uppercase tracking-wide text-zinc-500">Daily Limit</p>
+                    <p className="mt-0.5 text-sm font-bold text-white">
                       {formatUSDT(agent.dailyLimit)}
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-zinc-500">
+                  <span className="text-xs font-semibold text-zinc-500">
                     {agent._count.transactions} transactions
                   </span>
                   <div className="flex items-center gap-2">
