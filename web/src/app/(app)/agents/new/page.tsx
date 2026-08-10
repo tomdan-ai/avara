@@ -8,12 +8,14 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
+import { useToast } from '@/hooks/use-toast'
 import { Bot, ArrowLeft, Loader2, Shield } from 'lucide-react'
 import Link from 'next/link'
 
 export default function NewAgentPage() {
   const router = useRouter()
   const { address, isConnected } = useAccount()
+  const { toast } = useToast()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -57,9 +59,16 @@ export default function NewAgentPage() {
       }
 
       const agent = await res.json()
+      toast({
+        variant: 'success',
+        title: 'Agent created',
+        description: `${form.name} is ready. Fund it to start making payments.`,
+      })
       router.push(`/agents/${agent.id}`)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Something went wrong')
+      const message = err instanceof Error ? err.message : 'Something went wrong'
+      setError(message)
+      toast({ variant: 'destructive', title: 'Could not create agent', description: message })
     } finally {
       setIsLoading(false)
     }
@@ -74,7 +83,7 @@ export default function NewAgentPage() {
           </Button>
         </Link>
         <div>
-          <h1 className="text-2xl font-bold text-white">Create Agent</h1>
+          <h1 className="text-2xl font-black uppercase tracking-tight text-white">Create Agent</h1>
           <p className="text-sm text-zinc-400">
             Deploy an AI agent with a programmable wallet on BOT Chain.
           </p>
@@ -86,8 +95,8 @@ export default function NewAgentPage() {
         <Card>
           <CardHeader>
             <div className="flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-violet-600/20">
-                <Bot className="h-4 w-4 text-violet-400" />
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg border-2 border-violet-400 bg-violet-600/25">
+                <Bot className="h-4 w-4 text-violet-300" />
               </div>
               <div>
                 <CardTitle>Agent Identity</CardTitle>
@@ -127,8 +136,8 @@ export default function NewAgentPage() {
         <Card>
           <CardHeader>
             <div className="flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-600/20">
-                <Shield className="h-4 w-4 text-emerald-400" />
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg border-2 border-emerald-400 bg-emerald-600/25">
+                <Shield className="h-4 w-4 text-emerald-300" />
               </div>
               <div>
                 <CardTitle>Spending Policy</CardTitle>
@@ -174,7 +183,7 @@ export default function NewAgentPage() {
               </div>
             </div>
 
-            <div className="rounded-lg border border-emerald-500/20 bg-emerald-500/5 p-4">
+            <div className="rounded-lg border-2 border-emerald-500/40 bg-emerald-500/10 p-4">
               <p className="text-xs text-emerald-300">
                 <strong>Security model:</strong> These limits are written to the AgentWallet smart
                 contract on BOT Chain at deployment time. They cannot be bypassed by the AI model or
@@ -185,13 +194,13 @@ export default function NewAgentPage() {
         </Card>
 
         {error && (
-          <div className="rounded-lg border border-red-500/20 bg-red-500/10 p-4 text-sm text-red-400">
+          <div className="rounded-lg border-2 border-red-500/40 bg-red-500/10 p-4 text-sm font-medium text-red-300">
             {error}
           </div>
         )}
 
         {!isConnected && (
-          <div className="rounded-lg border border-amber-500/20 bg-amber-500/10 p-4 text-sm text-amber-400">
+          <div className="rounded-lg border-2 border-amber-500/40 bg-amber-500/10 p-4 text-sm font-medium text-amber-300">
             Connect your wallet to create an agent.
           </div>
         )}
