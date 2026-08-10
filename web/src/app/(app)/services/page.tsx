@@ -25,7 +25,7 @@ export default async function ServicesPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-white">Service Marketplace</h1>
+        <h1 className="text-3xl font-black uppercase tracking-tight text-white">Service Marketplace</h1>
         <p className="mt-1 text-sm text-zinc-400">
           On-chain registered services your agents can autonomously discover and purchase.
         </p>
@@ -48,16 +48,16 @@ export default async function ServicesPage() {
             return (
               <Card
                 key={service.id}
-                className={`transition ${service.active ? 'hover:border-violet-500/30 hover:bg-violet-500/5' : 'opacity-60'}`}
+                className={service.active ? 'nb-press hover:border-violet-400' : 'opacity-60'}
               >
                 <CardContent className="p-6">
                   <div className="mb-4 flex items-start justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-lg border-2 border-zinc-600 bg-[var(--surface-2)]">
                         <Icon className="h-5 w-5 text-zinc-300" />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-white">{service.name}</h3>
+                        <h3 className="font-bold text-white">{service.name}</h3>
                         <p className="text-xs text-zinc-500 capitalize">{service.category}</p>
                       </div>
                     </div>
@@ -68,14 +68,14 @@ export default async function ServicesPage() {
 
                   <p className="mb-4 text-sm text-zinc-400">{service.description}</p>
 
-                  <div className="flex items-center justify-between rounded-lg bg-white/5 px-3 py-2">
-                    <span className="text-xs text-zinc-500">Price per request</span>
-                    <span className="text-sm font-bold text-white">{formatUSDT(service.price)}</span>
+                  <div className="flex items-center justify-between rounded-lg border-2 border-zinc-700 bg-[var(--surface-2)] px-3 py-2">
+                    <span className="text-xs font-bold uppercase tracking-wide text-zinc-500">Price per request</span>
+                    <span className="text-sm font-black text-white">{formatUSDT(service.price)}</span>
                   </div>
 
                   <div className="mt-3 flex items-center justify-between text-xs text-zinc-500">
-                    <span>Provider: {shortenAddress(service.providerAddress)}</span>
-                    <span>{service._count.transactions} uses</span>
+                    <span className="font-mono">Provider: {shortenAddress(service.providerAddress)}</span>
+                    <span className="font-semibold">{service._count.transactions} uses</span>
                   </div>
                 </CardContent>
               </Card>
@@ -85,8 +85,8 @@ export default async function ServicesPage() {
       )}
 
       {/* Info callout */}
-      <div className="rounded-xl border border-white/10 bg-white/5 p-6">
-        <h3 className="mb-2 font-semibold text-white">How service discovery works</h3>
+      <div className="rounded-lg border-2 border-zinc-700 bg-[var(--surface)] p-6 nb-shadow">
+        <h3 className="mb-2 font-black uppercase tracking-tight text-white">How service discovery works</h3>
         <ol className="space-y-2 text-sm text-zinc-400">
           <li>1. Services are registered on-chain via the ServiceRegistry contract.</li>
           <li>2. When an agent receives a request, it calls <code className="text-violet-300">searchServices()</code>.</li>
