@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { makeTools } from '@/lib/ai-tools'
 import { generateText } from 'ai'
 import { createOpenAI } from '@ai-sdk/openai'
+import { formatUnits } from 'viem'
 import { z } from 'zod'
 
 interface Context {
@@ -92,7 +93,6 @@ export async function POST(req: NextRequest, { params }: Context) {
 }
 
 function buildDefaultSystemPrompt(agent: { name: string; transactionLimit: string; dailyLimit: string }) {
-  const { formatUnits } = require('viem')
   const txLimit = formatUnits(BigInt(agent.transactionLimit), 6)
   const dailyLimit = formatUnits(BigInt(agent.dailyLimit), 6)
 
