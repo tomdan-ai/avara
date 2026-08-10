@@ -1,8 +1,19 @@
 @import "tailwindcss";
 
 :root {
-  --background: #09090b;
+  --background: #0a0a0c;
+  --surface: #141418;
+  --surface-2: #1c1c22;
   --foreground: #fafafa;
+
+  /* Neobrutalism accents */
+  --nb-violet: #7c3aed;
+  --nb-lime: #a3e635;
+  --nb-border: #26262e;
+
+  /* Hard offset shadow colors (visible on a dark base) */
+  --nb-shadow: rgba(255, 255, 255, 0.14);
+  --nb-shadow-strong: rgba(255, 255, 255, 0.22);
 }
 
 body {
@@ -14,32 +25,70 @@ body {
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 3px;
+  background: var(--nb-border);
+  border-radius: 0;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: #3a3a44;
+}
+
+@layer components {
+  /* Bordered, lifted surface — the core neobrutalist block */
+  .nb-card {
+    @apply rounded-lg border-2 border-zinc-700 bg-[var(--surface)];
+    box-shadow: 4px 4px 0 0 var(--nb-shadow);
+  }
+
+  /* Reusable hard shadows */
+  .nb-shadow {
+    box-shadow: 4px 4px 0 0 var(--nb-shadow);
+  }
+  .nb-shadow-sm {
+    box-shadow: 3px 3px 0 0 var(--nb-shadow);
+  }
+  .nb-shadow-violet {
+    box-shadow: 4px 4px 0 0 var(--nb-violet);
+  }
+  .nb-shadow-lime {
+    box-shadow: 4px 4px 0 0 var(--nb-lime);
+  }
+
+  /* Press interaction: element sinks into its shadow on hover/active */
+  .nb-press {
+    transition:
+      transform 0.1s ease,
+      box-shadow 0.1s ease,
+      background-color 0.15s ease;
+  }
+  .nb-press:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 0 var(--nb-shadow);
+  }
+  .nb-press:active {
+    transform: translate(4px, 4px);
+    box-shadow: 0 0 0 0 var(--nb-shadow);
+  }
 }
 
 /* Chat bubbles */
 .chat-bubble-user {
-  @apply rounded-2xl rounded-br-sm bg-violet-600 px-4 py-2.5 text-sm text-white;
+  @apply rounded-lg border-2 border-violet-400 bg-violet-600 px-4 py-2.5 text-sm font-medium text-white;
 }
 
 .chat-bubble-agent {
-  @apply rounded-2xl rounded-bl-sm border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-zinc-200;
+  @apply rounded-lg border-2 border-zinc-700 bg-[var(--surface-2)] px-4 py-2.5 text-sm text-zinc-100;
 }
 
 /* Step indicator used in chat */
 .step-item {
-  @apply flex items-center gap-2 text-xs text-zinc-400;
+  @apply flex items-center gap-2 text-xs font-medium text-zinc-400;
 }
 .step-item.done {
   @apply text-emerald-400;
