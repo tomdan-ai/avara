@@ -8,7 +8,8 @@ import { botChain } from '@/config/chains'
 
 export const publicClient = createPublicClient({
   chain: botChain,
-  transport: http(process.env.BOT_RPC_URL || 'https://rpc.botchain.ai'),
+  // Falls back to botChain's env-driven RPC when BOT_RPC_URL is unset
+  transport: http(process.env.BOT_RPC_URL),
 })
 
 /**
@@ -25,6 +26,6 @@ export function getOperatorWallet() {
   return createWalletClient({
     account,
     chain: botChain,
-    transport: http(process.env.BOT_RPC_URL || 'https://rpc.botchain.ai'),
+    transport: http(process.env.BOT_RPC_URL),
   })
 }
