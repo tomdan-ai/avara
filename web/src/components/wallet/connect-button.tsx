@@ -17,7 +17,7 @@ export function ConnectButton() {
       <button
         onClick={() => connect({ connector: connectors[0] })}
         disabled={isPending}
-        className="flex items-center gap-2 rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-violet-500 disabled:opacity-60"
+        className="nb-press flex items-center gap-2 rounded-lg border-2 border-violet-400 bg-violet-600 px-4 py-2 text-sm font-bold text-white nb-shadow-sm disabled:opacity-60"
       >
         <Wallet className="h-4 w-4" />
         {isPending ? 'Connecting...' : 'Connect Wallet'}
@@ -30,7 +30,7 @@ export function ConnectButton() {
       <div className="relative">
         <button
           onClick={() => setOpen((v) => !v)}
-          className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-white transition hover:bg-white/10"
+          className="nb-press flex items-center gap-2 rounded-lg border-2 border-zinc-700 bg-[var(--surface)] px-4 py-2 text-sm font-bold text-white nb-shadow-sm"
         >
           <div className="h-2 w-2 rounded-full bg-emerald-400" />
           {shortenAddress(address!)}
@@ -38,13 +38,13 @@ export function ConnectButton() {
         </button>
 
         {open && (
-          <div className="absolute right-0 mt-2 w-48 rounded-lg border border-white/10 bg-zinc-900 p-1 shadow-xl">
+          <div className="absolute right-0 mt-2 w-48 rounded-lg border-2 border-zinc-700 bg-[var(--surface)] p-1 nb-shadow">
             <button
               onClick={() => {
                 disconnect()
                 setOpen(false)
               }}
-              className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-zinc-300 transition hover:bg-white/5 hover:text-white"
+              className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-zinc-300 transition hover:bg-white/5 hover:text-white"
             >
               <LogOut className="h-4 w-4" />
               Disconnect
