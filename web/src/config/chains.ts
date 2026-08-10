@@ -1,9 +1,31 @@
 import { defineChain } from 'viem'
 
-// BOT Chain Mainnet
+/**
+ * BOT Chain (testnet) — every network value is read from the environment.
+ * Nothing here is hardcoded, so switching networks only means changing env.
+ *
+ * Required (browser-safe) env vars — see .env.example:
+ *   NEXT_PUBLIC_BOT_CHAIN_ID
+ *   NEXT_PUBLIC_BOT_CHAIN_RPC
+ *   NEXT_PUBLIC_BOT_EXPLORER
+ *
+ * NEXT_PUBLIC_* vars are inlined at build time, so they must be referenced
+ * as full literals (no dynamic key access) for Next.js to pick them up.
+ */
+const CHAIN_ID = Number(process.env.NEXT_PUBLIC_BOT_CHAIN_ID)
+const RPC_URL = process.env.NEXT_PUBLIC_BOT_CHAIN_RPC
+const EXPLORER_URL = process.env.NEXT_PUBLIC_BOT_EXPLORER
+
+if (!CHAIN_ID || Number.isNaN(CHAIN_ID) || !RPC_URL || !EXPLORER_URL) {
+  throw new Error(
+    'Missing BOT Chain env vars. Set NEXT_PUBLIC_BOT_CHAIN_ID, ' +
+      'NEXT_PUBLIC_BOT_CHAIN_RPC and NEXT_PUBLIC_BOT_EXPLORER in .env.local',
+  )
+}
+
 export const botChain = defineChain({
-  id: 677,
-  name: 'BOT Chain',
+  id: CHAIN_ID,
+  name: process.env.NEXT_PUBLIC_BOT_CHAIN_NAME || 'BOT Chain Testnet',
   nativeCurrency: {
     decimals: 18,
     name: 'BOT',
@@ -11,46 +33,22 @@ export const botChain = defineChain({
   },
   rpcUrls: {
     default: {
-      http: [process.env.NEXT_PUBLIC_BOT_CHAIN_RPC || 'https://rpc.botchain.ai'],
+      http: [RPC_URL],
     },
   },
   blockExplorers: {
     default: {
       name: 'BOT Chain Explorer',
-      url: process.env.NEXT_PUBLIC_BOT_EXPLORER || 'https://scan.botchain.ai',
+      url: EXPLORER_URL,
     },
   },
-  contracts: {},
-})
-
-// BOT Chain Testnet — update once official testnet details are published
-export const botChainTestnet = defineChain({
-  id: 677, // Update with actual testnet chain ID when available
-  name: 'BOT Chain Testnet',
-  nativeCurrency: {
-    decimals: 18,
-    name: 'BOT',
-    symbol: 'BOT',
-  },
-  rpcUrls: {
-    default: {
-      http: ['https://rpc.botchain.ai'], // Update with testnet RPC
-    },
-  },
-  blockExplorers: {
-    default: {
-      name: 'BOT Chain Testnet Explorer',
-      url: 'https://scan.botchain.ai', // Update with testnet explorer
-    },
-  },
-  contracts: {},
   testnet: true,
+  contracts: {},
 })
 
 export const SUPPORTED_CHAIN = botChain
 
-export const USDT_ADDRESS = (process.env.NEXT_PUBLIC_USDT_ADDRESS ||
-  '0xaBabc7Ddc03e501d190C676BF3d92ef0e6e87a3C') as `0x${string}`
+export const USDT_ADDRESS = (process.env.NEXT_PUBLIC_USDT_ADDRESS || '') as `0x${string}`
 
 export const USDT_DECIMALS = 6
 
