@@ -7,14 +7,11 @@ import {
   Bot,
   Send,
   User,
-  Search,
   CheckCircle2,
-  DollarSign,
-  Shield,
-  Link2,
   Loader2,
   ArrowLeft,
   XCircle,
+  Sparkles,
 } from 'lucide-react'
 import Link from 'next/link'
 import { explorerTxUrl, formatUSDT } from '@/lib/utils'
@@ -42,14 +39,12 @@ interface Message {
   error?: string
 }
 
-const STEP_ICONS = {
-  search: Search,
-  found: CheckCircle2,
-  cost: DollarSign,
-  policy: Shield,
-  payment: Link2,
-  error: XCircle,
-}
+const QUICK_PROMPTS = [
+  "What's the weather in Lagos right now?",
+  "What's the current price of Bitcoin?",
+  'Translate "good morning, how are you?" to French',
+  'What is the ETH price in USD?',
+]
 
 export function ChatInterface({ agent }: { agent: Agent }) {
   const [messages, setMessages] = useState<Message[]>([
@@ -62,22 +57,24 @@ export function ChatInterface({ agent }: { agent: Agent }) {
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
+  const idRef = useRef(0)
+  const nextId = () => `msg-${(idRef.current += 1)}`
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
-  const sendMessage = async () => {
-    const text = input.trim()
+  const sendMessage = async (override?: string) => {
+    const text = (override ?? input).trim()
     if (!text || isLoading) return
 
-    const userMsg: Message = { id: Date.now().toString(), role: 'user', content: text }
+    const userMsg: Message = { id: nextId(), role: 'user', content: text }
     setMessages((prev) => [...prev, userMsg])
     setInput('')
     setIsLoading(true)
 
     // Add a placeholder assistant message with live steps
-    const assistantId = (Date.now() + 1).toString()
+    const assistantId = nextId()
     const placeholderSteps: StepItem[] = [
       { label: 'Searching services...', status: 'active' },
       { label: 'Checking price', status: 'pending' },
@@ -111,7 +108,7 @@ export function ChatInterface({ agent }: { agent: Agent }) {
           }
         })
       )
-    } catch (err) {
+    } catch {
       setMessages((prev) =>
         prev.map((m) => {
           if (m.id !== assistantId) return m
@@ -138,17 +135,17 @@ export function ChatInterface({ agent }: { agent: Agent }) {
   return (
     <div className="flex h-full flex-col">
       {/* Header */}
-      <div className="flex items-center gap-3 border-b border-white/10 pb-4">
+      <div className="flex items-center gap-3 border-b-2 border-zinc-800 pb-4">
         <Link href={`/agents/${agent.id}`}>
           <Button variant="ghost" size="icon">
             <ArrowLeft className="h-4 w-4" />
           </Button>
         </Link>
-        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-600/20">
-          <Bot className="h-4 w-4 text-violet-400" />
+        <div className="flex h-9 w-9 items-center justify-center rounded-lg border-2 border-violet-400 bg-violet-600/25">
+          <Bot className="h-4 w-4 text-violet-300" />
         </div>
         <div>
-          <h2 className="font-semibold text-white">{agent.name}</h2>
+          <h2 className="font-black uppercase tracking-tight text-white">{agent.name}</h2>
           <div className="flex items-center gap-1.5">
             <div
               className={cn(
@@ -156,7 +153,7 @@ export function ChatInterface({ agent }: { agent: Agent }) {
                 agent.status === 'ACTIVE' ? 'bg-emerald-400' : 'bg-zinc-500'
               )}
             />
-            <span className="text-xs text-zinc-500">{agent.status}</span>
+            <span className="text-xs font-bold uppercase tracking-wide text-zinc-500">{agent.status}</span>
           </div>
         </div>
       </div>
@@ -171,8 +168,30 @@ export function ChatInterface({ agent }: { agent: Agent }) {
         </div>
       </div>
 
+      {/* Quick prompts — only shown before the user has sent anything */}
+      {messages.length <= 1 && (
+        <div className="mb-3">
+          <div className="mb-2 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-zinc-500">
+            <Sparkles className="h-3.5 w-3.5 text-violet-400" />
+            Try one of these
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {QUICK_PROMPTS.map((prompt) => (
+              <button
+                key={prompt}
+                onClick={() => sendMessage(prompt)}
+                disabled={isLoading}
+                className="nb-press rounded-lg border-2 border-zinc-700 bg-[var(--surface)] px-3 py-1.5 text-left text-xs font-semibold text-zinc-200 nb-shadow-sm disabled:opacity-50"
+              >
+                {prompt}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Input */}
-      <div className="border-t border-white/10 pt-4">
+      <div className="border-t-2 border-zinc-800 pt-4">
         <div className="flex items-center gap-3">
           <Input
             value={input}
@@ -182,7 +201,7 @@ export function ChatInterface({ agent }: { agent: Agent }) {
             disabled={isLoading}
             className="flex-1"
           />
-          <Button onClick={sendMessage} disabled={isLoading || !input.trim()} size="icon">
+          <Button onClick={() => sendMessage()} disabled={isLoading || !input.trim()} size="icon">
             {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
           </Button>
         </div>
@@ -200,8 +219,8 @@ function ChatMessage({ message }: { message: Message }) {
       <div className="flex justify-end">
         <div className="flex max-w-[75%] items-end gap-2">
           <div className="chat-bubble-user">{message.content}</div>
-          <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-violet-600/20">
-            <User className="h-3.5 w-3.5 text-violet-400" />
+          <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg border-2 border-violet-400 bg-violet-600/25">
+            <User className="h-3.5 w-3.5 text-violet-300" />
           </div>
         </div>
       </div>
@@ -210,13 +229,13 @@ function ChatMessage({ message }: { message: Message }) {
 
   return (
     <div className="flex items-end gap-2">
-      <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-zinc-700">
+      <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg border-2 border-zinc-600 bg-zinc-800">
         <Bot className="h-3.5 w-3.5 text-zinc-300" />
       </div>
       <div className="max-w-[80%] space-y-3">
         {/* Execution steps */}
         {message.steps && message.steps.length > 0 && (
-          <div className="rounded-xl border border-white/10 bg-zinc-900 px-4 py-3 space-y-2">
+          <div className="space-y-2 rounded-lg border-2 border-zinc-700 bg-[var(--surface)] px-4 py-3">
             {message.steps.map((step, i) => (
               <StepRow key={i} step={step} />
             ))}
@@ -230,8 +249,8 @@ function ChatMessage({ message }: { message: Message }) {
 
         {/* Transaction confirmation */}
         {message.txHash && (
-          <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 px-4 py-3">
-            <div className="flex items-center gap-2 text-xs text-emerald-400">
+          <div className="rounded-lg border-2 border-emerald-500/50 bg-emerald-500/10 px-4 py-3">
+            <div className="flex items-center gap-2 text-xs font-bold text-emerald-300">
               <CheckCircle2 className="h-3.5 w-3.5" />
               Payment confirmed on BOT Chain
               {message.amount && (
@@ -242,7 +261,7 @@ function ChatMessage({ message }: { message: Message }) {
               href={explorerTxUrl(message.txHash)}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-1 flex items-center gap-1 text-xs text-violet-400 hover:text-violet-300"
+              className="mt-1 flex items-center gap-1 text-xs font-bold text-violet-400 hover:text-violet-300"
             >
               View transaction →
             </a>
@@ -251,8 +270,8 @@ function ChatMessage({ message }: { message: Message }) {
 
         {/* Payment blocked */}
         {message.error && !message.txHash && (
-          <div className="rounded-xl border border-red-500/20 bg-red-500/5 px-4 py-3">
-            <div className="flex items-center gap-2 text-xs text-red-400">
+          <div className="rounded-lg border-2 border-red-500/50 bg-red-500/10 px-4 py-3">
+            <div className="flex items-center gap-2 text-xs font-bold text-red-300">
               <XCircle className="h-3.5 w-3.5" />
               Payment blocked
             </div>
