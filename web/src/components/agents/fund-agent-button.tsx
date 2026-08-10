@@ -1,13 +1,14 @@
 'use client'
 
 import { useState } from 'react'
-import { useAccount, useWriteContract, useWaitForTransactionReceipt } from 'wagmi'
+import { useAccount, useWriteContract } from 'wagmi'
 import { parseUnits } from 'viem'
 import { ERC20_ABI, AGENT_WALLET_ABI } from '@/config/abis'
 import { USDT_ADDRESS } from '@/config/chains'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { useToast } from '@/hooks/use-toast'
 import { Loader2, DollarSign, Check } from 'lucide-react'
 
 interface FundAgentButtonProps {
@@ -19,6 +20,7 @@ type Step = 'idle' | 'approving' | 'depositing' | 'done' | 'error'
 
 export function FundAgentButton({ agentId, walletAddress }: FundAgentButtonProps) {
   const { address, isConnected } = useAccount()
+  const { toast } = useToast()
   const [amount, setAmount] = useState('')
   const [step, setStep] = useState<Step>('idle')
   const [errorMsg, setErrorMsg] = useState('')
@@ -35,7 +37,8 @@ export function FundAgentButton({ agentId, walletAddress }: FundAgentButtonProps
 
       // Step 1: Approve USDT spend
       setStep('approving')
-      const approveTx = await writeContractAsync({
+      toast({ title: 'Confirm in wallet', description: `Approve ${amount} USDT for the agent wallet.` })
+      await writeContractAsync({
         address: USDT_ADDRESS,
         abi: ERC20_ABI,
         functionName: 'approve',
@@ -44,6 +47,7 @@ export function FundAgentButton({ agentId, walletAddress }: FundAgentButtonProps
 
       // Step 2: Deposit into agent wallet
       setStep('depositing')
+      toast({ title: 'Approve deposit', description: 'Confirm the deposit transaction in your wallet.' })
       const depositTx = await writeContractAsync({
         address: walletAddress as `0x${string}`,
         abi: AGENT_WALLET_ABI,
@@ -59,9 +63,20 @@ export function FundAgentButton({ agentId, walletAddress }: FundAgentButtonProps
       })
 
       setStep('done')
+      toast({
+        variant: 'success',
+        title: 'Agent funded',
+        description: `Deposited ${amount} USDT. The agent can now pay for services.`,
+      })
     } catch (err) {
       setStep('error')
-      setErrorMsg(err instanceof Error ? err.message : 'Transaction failed')
+      const message = err instanceof Error ? err.message : 'Transaction failed'
+      setErrorMsg(message)
+      toast({
+        variant: 'destructive',
+        title: 'Funding failed',
+        description: message.length > 120 ? `${message.slice(0, 120)}…` : message,
+      })
     }
   }
 
@@ -76,7 +91,7 @@ export function FundAgentButton({ agentId, walletAddress }: FundAgentButtonProps
 
   if (step === 'done') {
     return (
-      <div className="flex items-center gap-2 rounded-lg bg-emerald-500/10 p-3 text-sm text-emerald-400">
+      <div className="flex items-center gap-2 rounded-lg border-2 border-emerald-500/50 bg-emerald-500/10 p-3 text-sm font-bold text-emerald-300">
         <Check className="h-4 w-4" />
         Deposited {amount} USDT successfully
       </div>
@@ -91,7 +106,7 @@ export function FundAgentButton({ agentId, walletAddress }: FundAgentButtonProps
           Fund Agent
         </Button>
       ) : (
-        <div className="space-y-3 rounded-lg border border-white/10 p-4">
+        <div className="space-y-3 rounded-lg border-2 border-zinc-700 bg-[var(--surface-2)] p-4">
           <Label>Amount (USDT)</Label>
           <Input
             type="number"
