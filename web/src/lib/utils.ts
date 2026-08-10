@@ -36,13 +36,13 @@ export function formatDate(date: Date | string): string {
 
 /** Build a BOT Chain explorer URL for a transaction */
 export function explorerTxUrl(txHash: string): string {
-  const base = process.env.NEXT_PUBLIC_BOT_EXPLORER || 'https://scan.botchain.ai'
+  const base = process.env.NEXT_PUBLIC_BOT_EXPLORER ?? ''
   return `${base}/tx/${txHash}`
 }
 
 /** Build a BOT Chain explorer URL for an address */
 export function explorerAddressUrl(address: string): string {
-  const base = process.env.NEXT_PUBLIC_BOT_EXPLORER || 'https://scan.botchain.ai'
+  const base = process.env.NEXT_PUBLIC_BOT_EXPLORER ?? ''
   return `${base}/address/${address}`
 }
 
