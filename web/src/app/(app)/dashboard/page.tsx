@@ -72,7 +72,7 @@ export default async function DashboardPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-white">Dashboard</h1>
+        <h1 className="text-3xl font-black uppercase tracking-tight text-white">Dashboard</h1>
         <p className="mt-1 text-sm text-zinc-400">
           Overview of your agents, spending, and on-chain activity.
         </p>
@@ -82,15 +82,17 @@ export default async function DashboardPage() {
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         {statCards.map(({ label, value, icon: Icon, href }) => (
           <Link key={label} href={href}>
-            <Card className="transition hover:border-violet-500/30 hover:bg-violet-500/5">
+            <Card className="nb-press h-full hover:border-violet-400">
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-xs font-medium text-zinc-400">{label}</CardTitle>
-                  <Icon className="h-4 w-4 text-zinc-500" />
+                  <CardTitle className="text-xs font-bold uppercase tracking-wide text-zinc-400">
+                    {label}
+                  </CardTitle>
+                  <Icon className="h-4 w-4 text-violet-400" />
                 </div>
               </CardHeader>
               <CardContent>
-                <p className="text-2xl font-bold text-white">{value}</p>
+                <p className="text-3xl font-black text-white">{value}</p>
               </CardContent>
             </Card>
           </Link>
@@ -100,8 +102,13 @@ export default async function DashboardPage() {
       {/* Recent transactions */}
       <div>
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-white">Recent Transactions</h2>
-          <Link href="/transactions" className="text-sm text-violet-400 hover:text-violet-300">
+          <h2 className="text-lg font-black uppercase tracking-tight text-white">
+            Recent Transactions
+          </h2>
+          <Link
+            href="/transactions"
+            className="text-sm font-bold text-violet-400 hover:text-violet-300"
+          >
             View all →
           </Link>
         </div>
@@ -117,24 +124,24 @@ export default async function DashboardPage() {
             </CardContent>
           </Card>
         ) : (
-          <div className="overflow-hidden rounded-xl border border-white/10">
+          <div className="overflow-hidden rounded-lg border-2 border-zinc-700 nb-shadow">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-white/10 bg-white/5">
-                  <th className="px-4 py-3 text-left font-medium text-zinc-400">Agent</th>
-                  <th className="px-4 py-3 text-left font-medium text-zinc-400">Service</th>
-                  <th className="px-4 py-3 text-left font-medium text-zinc-400">Amount</th>
-                  <th className="px-4 py-3 text-left font-medium text-zinc-400">Status</th>
-                  <th className="px-4 py-3 text-left font-medium text-zinc-400">Time</th>
-                  <th className="px-4 py-3 text-left font-medium text-zinc-400">TX</th>
+                <tr className="border-b-2 border-zinc-700 bg-[var(--surface-2)]">
+                  <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wide text-zinc-400">Agent</th>
+                  <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wide text-zinc-400">Service</th>
+                  <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wide text-zinc-400">Amount</th>
+                  <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wide text-zinc-400">Status</th>
+                  <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wide text-zinc-400">Time</th>
+                  <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wide text-zinc-400">TX</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/5">
+              <tbody className="divide-y-2 divide-zinc-800 bg-[var(--surface)]">
                 {stats.transactions.map((tx) => (
-                  <tr key={tx.id} className="hover:bg-white/3 transition">
-                    <td className="px-4 py-3 text-zinc-200">{tx.agent.name}</td>
+                  <tr key={tx.id} className="transition hover:bg-white/5">
+                    <td className="px-4 py-3 font-semibold text-zinc-100">{tx.agent.name}</td>
                     <td className="px-4 py-3 text-zinc-400">{tx.service?.name ?? '—'}</td>
-                    <td className="px-4 py-3 font-mono text-zinc-200">{formatUSDT(tx.amount)}</td>
+                    <td className="px-4 py-3 font-mono font-semibold text-zinc-100">{formatUSDT(tx.amount)}</td>
                     <td className="px-4 py-3">
                       <StatusBadge status={tx.status} />
                     </td>
@@ -145,7 +152,7 @@ export default async function DashboardPage() {
                           href={explorerTxUrl(tx.txHash)}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-violet-400 hover:text-violet-300"
+                          className="font-bold text-violet-400 hover:text-violet-300"
                         >
                           View →
                         </a>
