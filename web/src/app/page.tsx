@@ -33,29 +33,29 @@ const features = [
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-zinc-950 text-white">
+    <div className="min-h-screen bg-[var(--background)] text-white">
       {/* Navbar */}
-      <header className="border-b border-white/10">
+      <header className="border-b-2 border-zinc-800">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-600">
+            <div className="flex h-8 w-8 items-center justify-center rounded-md border-2 border-violet-400 bg-violet-600 nb-shadow-sm">
               <Bot className="h-4 w-4" />
             </div>
-            <span className="text-lg font-bold">Avara</span>
+            <span className="text-lg font-black uppercase tracking-tight">Avara</span>
           </div>
           <div className="flex items-center gap-3">
             <a
               href="https://github.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 rounded-lg border border-white/10 px-4 py-2 text-sm text-zinc-300 transition hover:bg-white/5"
+              className="nb-press flex items-center gap-2 rounded-lg border-2 border-zinc-700 bg-[var(--surface)] px-4 py-2 text-sm font-bold text-zinc-200 nb-shadow-sm"
             >
               <GitBranch className="h-4 w-4" />
               GitHub
             </a>
             <Link
               href="/dashboard"
-              className="flex items-center gap-2 rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-violet-500"
+              className="nb-press flex items-center gap-2 rounded-lg border-2 border-violet-400 bg-violet-600 px-4 py-2 text-sm font-bold text-white nb-shadow-sm"
             >
               Launch App
               <ArrowRight className="h-4 w-4" />
@@ -72,12 +72,12 @@ export default function LandingPage() {
         </div>
 
         <div className="relative mx-auto max-w-4xl">
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-violet-500/30 bg-violet-500/10 px-4 py-1.5 text-sm text-violet-300">
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border-2 border-violet-500/50 bg-violet-500/10 px-4 py-1.5 text-sm font-bold text-violet-300">
             <Zap className="h-3.5 w-3.5" />
             Built on BOT Chain · BOT Chain Africa Pioneer Builder Challenge
           </div>
 
-          <h1 className="mb-6 text-5xl font-bold leading-tight tracking-tight sm:text-6xl lg:text-7xl">
+          <h1 className="mb-6 text-5xl font-black uppercase leading-tight tracking-tight sm:text-6xl lg:text-7xl">
             Give AI Agents the
             <br />
             <span className="bg-gradient-to-r from-violet-400 to-violet-600 bg-clip-text text-transparent">
@@ -93,7 +93,7 @@ export default function LandingPage() {
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
               href="/dashboard"
-              className="flex items-center gap-2 rounded-xl bg-violet-600 px-6 py-3 text-base font-semibold text-white transition hover:bg-violet-500"
+              className="nb-press flex items-center gap-2 rounded-lg border-2 border-violet-400 bg-violet-600 px-6 py-3 text-base font-bold text-white nb-shadow"
             >
               Launch Avara
               <ArrowRight className="h-5 w-5" />
@@ -102,7 +102,7 @@ export default function LandingPage() {
               href="https://github.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 rounded-xl border border-white/10 px-6 py-3 text-base font-medium text-zinc-300 transition hover:bg-white/5"
+              className="nb-press flex items-center gap-2 rounded-lg border-2 border-zinc-700 bg-[var(--surface)] px-6 py-3 text-base font-bold text-zinc-200 nb-shadow"
             >
               <GitBranch className="h-5 w-5" />
               View on GitHub
@@ -112,23 +112,23 @@ export default function LandingPage() {
       </section>
 
       {/* How it works */}
-      <section className="border-t border-white/10 px-4 py-24 sm:px-6 lg:px-8">
+      <section className="border-t-2 border-zinc-800 px-4 py-24 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-5xl">
-          <h2 className="mb-2 text-center text-sm font-semibold uppercase tracking-widest text-violet-400">
+          <h2 className="mb-2 text-center text-sm font-bold uppercase tracking-widest text-violet-400">
             How it works
           </h2>
-          <h3 className="mb-16 text-center text-3xl font-bold">From question to on-chain payment</h3>
+          <h3 className="mb-16 text-center text-3xl font-black uppercase tracking-tight">From question to on-chain payment</h3>
 
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {steps.map((step, i) => (
               <div
                 key={step.label}
-                className="rounded-xl border border-white/10 bg-white/5 p-6 transition hover:border-violet-500/30 hover:bg-violet-500/5"
+                className="nb-press rounded-lg border-2 border-zinc-700 bg-[var(--surface)] p-6 nb-shadow hover:border-violet-400"
               >
-                <div className="mb-4 flex h-8 w-8 items-center justify-center rounded-full bg-violet-600/20 text-sm font-bold text-violet-400">
+                <div className="mb-4 flex h-8 w-8 items-center justify-center rounded-md border-2 border-violet-400 bg-violet-600/25 text-sm font-black text-violet-300">
                   {i + 1}
                 </div>
-                <h4 className="mb-1 font-semibold text-white">{step.label}</h4>
+                <h4 className="mb-1 font-bold text-white">{step.label}</h4>
                 <p className="text-sm text-zinc-400">{step.description}</p>
               </div>
             ))}
@@ -137,22 +137,22 @@ export default function LandingPage() {
       </section>
 
       {/* Features */}
-      <section className="border-t border-white/10 px-4 py-24 sm:px-6 lg:px-8">
+      <section className="border-t-2 border-zinc-800 px-4 py-24 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-5xl">
-          <h2 className="mb-2 text-center text-sm font-semibold uppercase tracking-widest text-violet-400">
+          <h2 className="mb-2 text-center text-sm font-bold uppercase tracking-widest text-violet-400">
             Architecture
           </h2>
-          <h3 className="mb-16 text-center text-3xl font-bold">
+          <h3 className="mb-16 text-center text-3xl font-black uppercase tracking-tight">
             AI autonomy with blockchain-enforced safety
           </h3>
 
           <div className="grid gap-8 md:grid-cols-3">
             {features.map(({ icon: Icon, title, description }) => (
               <div key={title} className="flex flex-col gap-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-violet-600/20">
-                  <Icon className="h-6 w-6 text-violet-400" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-lg border-2 border-violet-400 bg-violet-600/25 nb-shadow-sm">
+                  <Icon className="h-6 w-6 text-violet-300" />
                 </div>
-                <h4 className="text-lg font-semibold">{title}</h4>
+                <h4 className="text-lg font-bold">{title}</h4>
                 <p className="text-sm leading-relaxed text-zinc-400">{description}</p>
               </div>
             ))}
@@ -161,10 +161,10 @@ export default function LandingPage() {
       </section>
 
       {/* Security callout */}
-      <section className="border-t border-white/10 px-4 py-24 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-3xl rounded-2xl border border-violet-500/20 bg-violet-500/5 p-10 text-center">
+      <section className="border-t-2 border-zinc-800 px-4 py-24 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-3xl rounded-lg border-2 border-violet-500/50 bg-violet-500/10 p-10 text-center nb-shadow-violet">
           <Shield className="mx-auto mb-4 h-12 w-12 text-violet-400" />
-          <h3 className="mb-4 text-2xl font-bold">
+          <h3 className="mb-4 text-2xl font-black uppercase tracking-tight">
             AI proposes. Policy authorizes. Blockchain enforces.
           </h3>
           <p className="mb-8 text-zinc-400">
@@ -173,7 +173,7 @@ export default function LandingPage() {
           </p>
           <Link
             href="/agents/new"
-            className="inline-flex items-center gap-2 rounded-xl bg-violet-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-violet-500"
+            className="nb-press inline-flex items-center gap-2 rounded-lg border-2 border-violet-400 bg-violet-600 px-6 py-3 text-sm font-bold text-white nb-shadow"
           >
             Create your first agent
             <ChevronRight className="h-4 w-4" />
@@ -182,11 +182,11 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-white/10 px-4 py-8 sm:px-6 lg:px-8">
+      <footer className="border-t-2 border-zinc-800 px-4 py-8 sm:px-6 lg:px-8">
         <div className="mx-auto flex max-w-7xl items-center justify-between text-sm text-zinc-500">
           <span>Avara · BOT Chain Africa Pioneer Builder Challenge 2026</span>
           <a
-            href="https://scan.botchain.ai"
+            href={process.env.NEXT_PUBLIC_BOT_EXPLORER}
             target="_blank"
             rel="noopener noreferrer"
             className="transition hover:text-zinc-300"
