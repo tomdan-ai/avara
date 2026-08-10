@@ -21,7 +21,7 @@ export default async function TransactionsPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-white">Transactions</h1>
+        <h1 className="text-3xl font-black uppercase tracking-tight text-white">Transactions</h1>
         <p className="mt-1 text-sm text-zinc-400">
           All on-chain payments made by your agents, with BOT Chain explorer links.
         </p>
@@ -31,32 +31,32 @@ export default async function TransactionsPage() {
         <Card>
           <CardContent className="py-16 text-center">
             <ArrowLeftRight className="mx-auto mb-4 h-12 w-12 text-zinc-600" />
-            <h3 className="mb-2 text-lg font-semibold text-white">No transactions yet</h3>
+            <h3 className="mb-2 text-lg font-black uppercase tracking-tight text-white">No transactions yet</h3>
             <p className="text-sm text-zinc-400">
               Create an agent and start a chat to see transactions appear here.
             </p>
           </CardContent>
         </Card>
       ) : (
-        <div className="overflow-hidden rounded-xl border border-white/10">
+        <div className="overflow-hidden rounded-lg border-2 border-zinc-700 nb-shadow">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-white/10 bg-white/5">
-                <th className="px-4 py-3 text-left font-medium text-zinc-400">Agent</th>
-                <th className="px-4 py-3 text-left font-medium text-zinc-400">Service</th>
-                <th className="px-4 py-3 text-left font-medium text-zinc-400">Amount</th>
-                <th className="px-4 py-3 text-left font-medium text-zinc-400">Token</th>
-                <th className="px-4 py-3 text-left font-medium text-zinc-400">Status</th>
-                <th className="px-4 py-3 text-left font-medium text-zinc-400">Time</th>
-                <th className="px-4 py-3 text-left font-medium text-zinc-400">TX Hash</th>
+              <tr className="border-b-2 border-zinc-700 bg-[var(--surface-2)]">
+                <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wide text-zinc-400">Agent</th>
+                <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wide text-zinc-400">Service</th>
+                <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wide text-zinc-400">Amount</th>
+                <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wide text-zinc-400">Token</th>
+                <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wide text-zinc-400">Status</th>
+                <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wide text-zinc-400">Time</th>
+                <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wide text-zinc-400">TX Hash</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
+            <tbody className="divide-y-2 divide-zinc-800 bg-[var(--surface)]">
               {transactions.map((tx) => (
-                <tr key={tx.id} className="transition hover:bg-white/3">
-                  <td className="px-4 py-3 text-zinc-200">{tx.agent.name}</td>
+                <tr key={tx.id} className="transition hover:bg-white/5">
+                  <td className="px-4 py-3 font-semibold text-zinc-100">{tx.agent.name}</td>
                   <td className="px-4 py-3 text-zinc-400">{tx.service?.name ?? '—'}</td>
-                  <td className="px-4 py-3 font-mono text-zinc-200">{formatUSDT(tx.amount)}</td>
+                  <td className="px-4 py-3 font-mono font-semibold text-zinc-100">{formatUSDT(tx.amount)}</td>
                   <td className="px-4 py-3 text-zinc-400">{tx.token}</td>
                   <td className="px-4 py-3">
                     <StatusBadge status={tx.status} />
@@ -68,7 +68,7 @@ export default async function TransactionsPage() {
                         href={explorerTxUrl(tx.txHash)}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-1 font-mono text-xs text-violet-400 hover:text-violet-300"
+                        className="flex items-center gap-1 font-mono text-xs font-bold text-violet-400 hover:text-violet-300"
                       >
                         {tx.txHash.slice(0, 10)}...{tx.txHash.slice(-6)}
                         <span className="not-mono">→</span>
