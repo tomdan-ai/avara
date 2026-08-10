@@ -10,7 +10,8 @@ via_ir = false
 # BOT Chain testnet — update with actual testnet values
 [rpc_endpoints]
 bot_mainnet = "${BOT_RPC_URL}"
-# bot_testnet = "${BOT_TESTNET_RPC_URL}"
+bot_testnet = "${BOT_RPC_URL}"
 
 [etherscan]
 bot_mainnet = { key = "${ETHERSCAN_API_KEY}", url = "${BOT_EXPLORER_API_URL}" }
+bot_testnet = { key = "${ETHERSCAN_API_KEY}", url = "${BOT_EXPLORER_API_URL}" }
