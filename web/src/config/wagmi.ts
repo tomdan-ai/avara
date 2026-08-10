@@ -8,7 +8,8 @@ export const wagmiConfig = createConfig({
     injected(), // MetaMask and other injected wallets
   ],
   transports: {
-    [botChain.id]: http(process.env.NEXT_PUBLIC_BOT_CHAIN_RPC || 'https://rpc.botchain.ai'),
+    // Uses the env-driven RPC from botChain (NEXT_PUBLIC_BOT_CHAIN_RPC)
+    [botChain.id]: http(),
   },
   ssr: true,
 })
