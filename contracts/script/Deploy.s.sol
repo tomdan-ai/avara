@@ -32,21 +32,24 @@ contract DeployAvara is Script {
 
         vm.startBroadcast(deployerKey);
 
+        uint256 nonce = vm.getNonce(deployer);
+        // Step 1: ServiceRegistry (nonce), Step 2: PaymentRouter (nonce + 1), Step 3: AgentRegistry (nonce + 2)
+        address predictedAgentRegistry = vm.computeCreateAddress(deployer, nonce + 2);
+
         // 1. Deploy ServiceRegistry
         ServiceRegistry serviceRegistry = new ServiceRegistry();
         console.log("ServiceRegistry:", address(serviceRegistry));
 
-        // 2. Deploy PaymentRouter with a temporary AgentRegistry address
-        //    We'll need to update it after deploying AgentRegistry
-        // For now, deploy with deployer as placeholder
+        // 2. Deploy PaymentRouter with predicted AgentRegistry address
         PaymentRouter paymentRouter = new PaymentRouter(
-            deployer, // placeholder — update after AgentRegistry deployed
+            predictedAgentRegistry,
             address(serviceRegistry)
         );
         console.log("PaymentRouter:", address(paymentRouter));
 
         // 3. Deploy AgentRegistry
         AgentRegistry agentRegistry = new AgentRegistry(USDT, address(paymentRouter));
+        require(address(agentRegistry) == predictedAgentRegistry, "AgentRegistry address mismatch");
         console.log("AgentRegistry:", address(agentRegistry));
 
         // 4. Register built-in services

@@ -75,8 +75,13 @@ contract AvaraTest is Test {
 
         usdt = new MockUSDT();
         serviceRegistry = new ServiceRegistry();
-        paymentRouter = new PaymentRouter(address(0), address(serviceRegistry)); // temp registry addr
+
+        uint256 nonce = vm.getNonce(deployer);
+        address predictedAgentRegistry = vm.computeCreateAddress(deployer, nonce + 1);
+
+        paymentRouter = new PaymentRouter(predictedAgentRegistry, address(serviceRegistry));
         agentRegistry = new AgentRegistry(address(usdt), address(paymentRouter));
+        require(address(agentRegistry) == predictedAgentRegistry, "AgentRegistry address mismatch");
 
         // Add operator
         paymentRouter.addOperator(operator);
@@ -216,6 +221,20 @@ contract AvaraTest is Test {
         );
 
         assertEq(usdt.balanceOf(provider), providerBefore + WEATHER_PRICE);
+        assertEq(AgentWallet(agentWalletAddr).spentToday(), WEATHER_PRICE);
+    }
+
+    function test_RoutePaymentSucceeds() public {
+        uint256 providerBefore = usdt.balanceOf(deployer); // deployer is provider for weatherServiceId
+
+        vm.prank(operator);
+        paymentRouter.routePayment(
+            agentId,
+            weatherServiceId,
+            WEATHER_PRICE
+        );
+
+        assertEq(usdt.balanceOf(deployer), providerBefore + WEATHER_PRICE);
         assertEq(AgentWallet(agentWalletAddr).spentToday(), WEATHER_PRICE);
     }
 
