@@ -18,8 +18,10 @@ export function ConnectButton() {
 
   // Auto-prompt switch when connected to wrong network
   useEffect(() => {
-    if (isWrongNetwork) {
-      switchChain({ chainId: botChain.id })
+    if (isConnected && chainId !== botChain.id) {
+      // Small delay so wagmi has time to register the connection first
+      const t = setTimeout(() => switchChain({ chainId: botChain.id }), 300)
+      return () => clearTimeout(t)
     }
   }, [isConnected, chainId]) // eslint-disable-line react-hooks/exhaustive-deps
 
