@@ -41,7 +41,7 @@ export function NetworkBanner() {
         {isPending ? (
           <><Loader2 className="h-3 w-3 animate-spin" /> Switching...</>
         ) : (
-          'Add &amp; Switch to BOT Chain →'
+          'Add & Switch to BOT Chain →'
         )}
       </button>
     </div>

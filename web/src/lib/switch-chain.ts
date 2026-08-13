@@ -16,9 +16,9 @@ export async function addAndSwitchToBotChain(): Promise<boolean> {
     throw new Error('MetaMask is not installed.')
   }
 
-  const chainIdHex = '0x' + Number(process.env.NEXT_PUBLIC_BOT_CHAIN_ID ?? 968).toString(16)
-  const rpcUrl = process.env.NEXT_PUBLIC_BOT_CHAIN_RPC ?? 'https://rpc.bohr.life'
-  const explorerUrl = process.env.NEXT_PUBLIC_BOT_EXPLORER ?? 'https://scan.bohr.life'
+  const chainIdHex = '0x' + Number(process.env.NEXT_PUBLIC_BOT_CHAIN_ID ?? 677).toString(16)
+  const rpcUrl = process.env.NEXT_PUBLIC_BOT_CHAIN_RPC ?? 'https://rpc.botchain.ai'
+  const explorerUrl = process.env.NEXT_PUBLIC_BOT_EXPLORER ?? 'https://scan.botchain.ai'
 
   // Step 1: Try to switch — this works if the chain is already added
   try {
