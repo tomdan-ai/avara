@@ -45,7 +45,7 @@ export default function LandingPage() {
           </div>
           <div className="flex items-center gap-3">
             <a
-              href="https://github.com"
+              href="https://github.com/tomdan-ai/avara"
               target="_blank"
               rel="noopener noreferrer"
               className="nb-press flex items-center gap-2 rounded-lg border-2 border-zinc-700 bg-[var(--surface)] px-4 py-2 text-sm font-bold text-zinc-200 nb-shadow-sm"
@@ -99,7 +99,7 @@ export default function LandingPage() {
               <ArrowRight className="h-5 w-5" />
             </Link>
             <a
-              href="https://github.com"
+              href="https://github.com/tomdan-ai/avara"
               target="_blank"
               rel="noopener noreferrer"
               className="nb-press flex items-center gap-2 rounded-lg border-2 border-zinc-700 bg-[var(--surface)] px-6 py-3 text-base font-bold text-zinc-200 nb-shadow"
