@@ -118,12 +118,12 @@ export default function NewAgentPage() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="systemPrompt">
-                System prompt <span className="text-zinc-500">(optional)</span>
+                Custom instructions <span className="text-zinc-500">(optional)</span>
               </Label>
               <Textarea
                 id="systemPrompt"
                 name="systemPrompt"
-                placeholder="You are a helpful research agent that can look up data and purchase information services..."
+                placeholder="Focus on Solana meme coins. Only buy tokens under $1M market cap. Always explain your reasoning before purchasing..."
                 value={form.systemPrompt}
                 onChange={handleChange}
                 rows={3}
