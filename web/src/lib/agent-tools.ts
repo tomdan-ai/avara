@@ -541,17 +541,55 @@ export function makeAgentTools(agentId: string) {
         try {
           let txHash: string | null = null
 
-          // Production path: hit the AgentWallet contract
-          if (agent.walletAddress && process.env.AGENT_REGISTRY_ADDRESS) {
-            const { getOperatorWallet } = await import('./viem-server')
-            const { AGENT_WALLET_ABI } = await import('@/config/abis')
+          // Production path: call PaymentRouter.routePayment()
+          // The router validates agent/service, then calls AgentWallet.executePayment()
+          // which enforces all spending limits on-chain.
+          const routerAddress = process.env.PAYMENT_ROUTER_ADDRESS
+          if (agent.walletAddress && agent.blockchainAgentId != null && routerAddress) {
+            const { getOperatorWallet, publicClient } = await import('./viem-server')
+            const { PAYMENT_ROUTER_ABI } = await import('@/config/abis')
             const wallet = getOperatorWallet()
-            txHash = await wallet.writeContract({
-              address: agent.walletAddress as `0x${string}`,
-              abi: AGENT_WALLET_ABI,
-              functionName: 'executePayment',
-              args: [BigInt(0), recipientAddress as `0x${string}`, amountWei],
+
+            // Find the matching on-chain service by blockchainServiceId
+            // For general payments (not a registered service), we fall back to
+            // direct AgentWallet call if routePayment isn't applicable.
+            const service = await prisma.service.findFirst({
+              where: { active: true, price: { lte: amountWei.toString() } },
+              orderBy: { price: 'desc' },
             })
+
+            if (service?.blockchainServiceId != null) {
+              // Route through PaymentRouter — validates service + enforces limits
+              const { request } = await publicClient.simulateContract({
+                address: routerAddress as `0x${string}`,
+                abi: PAYMENT_ROUTER_ABI,
+                functionName: 'routePayment',
+                args: [
+                  BigInt(agent.blockchainAgentId),
+                  BigInt(service.blockchainServiceId),
+                  amountWei,
+                ],
+                account: wallet.account,
+              })
+              txHash = await wallet.writeContract(request)
+            } else {
+              // No matching registered service — call AgentWallet directly
+              const { AGENT_WALLET_ABI } = await import('@/config/abis')
+              const usdtAddr = (process.env.USDT_ADDRESS || '') as `0x${string}`
+              const { request } = await publicClient.simulateContract({
+                address: agent.walletAddress as `0x${string}`,
+                abi: AGENT_WALLET_ABI,
+                functionName: 'executePayment',
+                args: [
+                  BigInt(0),
+                  recipientAddress as `0x${string}`,
+                  usdtAddr,
+                  amountWei,
+                ],
+                account: wallet.account,
+              })
+              txHash = await wallet.writeContract(request)
+            }
           }
 
           // Update usage tracking

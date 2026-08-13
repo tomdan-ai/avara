@@ -52,7 +52,7 @@ export function FundAgentButton({ agentId, walletAddress }: FundAgentButtonProps
         address: walletAddress as `0x${string}`,
         abi: AGENT_WALLET_ABI,
         functionName: 'deposit',
-        args: [amountWei],
+        args: [USDT_ADDRESS, amountWei],
       })
 
       // Notify backend to record the deposit

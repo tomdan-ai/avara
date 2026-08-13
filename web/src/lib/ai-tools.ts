@@ -204,6 +204,7 @@ export function makeTools(agentId: string) {
             // Production path: execute via smart contract
             const { getOperatorWallet } = await import('./viem-server')
             const wallet = getOperatorWallet()
+            const usdtAddr = (process.env.USDT_ADDRESS || '') as `0x${string}`
             const hash = await wallet.writeContract({
               address: agent.walletAddress as `0x${string}`,
               abi: AGENT_WALLET_ABI,
@@ -211,6 +212,7 @@ export function makeTools(agentId: string) {
               args: [
                 BigInt(service.blockchainServiceId ?? 0),
                 providerAddress as `0x${string}`,
+                usdtAddr,
                 amountWei,
               ],
             })
